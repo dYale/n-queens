@@ -14,20 +14,63 @@
 // return a matrix (an array of arrays) representing a single nxn chessboard, with n rooks placed such that none of them can attack each other
 
 window.findNRooksSolution = function(n) {
-  var solution = undefined; //fixme
+  var solution =  new Board({n: n});
 
-  console.log('Single solution for ' + n + ' rooks:', JSON.stringify(solution));
-  return solution;
+  var recur = function(r,c){
+    //if toggle counter = n value
+    if(solution._isInBounds(r,c) && !(solution.hasAnyRooksConflicts())) {
+      solution.togglePiece(r,c);
+    } 
+    if(solution._isInBounds(r,c)){
+      recur(++r, ++c);
+    }
+  }
+
+  recur(0,0);
+  //internal function to call recusively
+  //need to recursively call in all 4 directions
+  //check if that new location is in conflict with anything in line
+  //if it is not than save that index and return
+  //repeat without that index as an option
+
+
+
+  return solution.rows();
 };
 
 
 
 // return the number of nxn chessboards that exist, with n rooks placed such that none of them can attack each other
 window.countNRooksSolutions = function(n) {
-  var solutionCount = undefined; //fixme
+  var solutionCount = 0;
+  var outerRecur = function (r,c) {
+    r = r || 0;
+    c = c || 0;
+    var x = new Board({n: n})
+    var recur = function(r,c){
+      //if toggle counter = n value
 
-  console.log('Number of solutions for ' + n + ' rooks:', solutionCount);
-  return solutionCount;
+      if(x._isInBounds(r,c) && !(x.hasAnyRooksConflicts())) {
+        x.togglePiece(r,c);
+        solutionCount++;
+      } 
+      if(x._isInBounds(r,c)){
+        recur(++r, c);
+        recur(r, ++c);
+      }
+    }
+    if (solutionCount === 0) {
+      recur(0,0);
+    } else {
+      outerRecur(++r, c);
+      outerRecur(r, ++c);
+    }
+  }
+
+  outerRecur();
+
+  return solutionCount;  
+  
 };
 
 
@@ -35,7 +78,7 @@ window.countNRooksSolutions = function(n) {
 // return a matrix (an array of arrays) representing a single nxn chessboard, with n queens placed such that none of them can attack each other
 window.findNQueensSolution = function(n) {
   var solution = undefined; //fixme
-
+// count previous solutions, put in recusive function as argument then concat them within a for loop into 1 array at the end
   console.log('Single solution for ' + n + ' queens:', JSON.stringify(solution));
   return solution;
 };
@@ -48,3 +91,5 @@ window.countNQueensSolutions = function(n) {
   console.log('Number of solutions for ' + n + ' queens:', solutionCount);
   return solutionCount;
 };
+
+ 
