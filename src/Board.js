@@ -80,6 +80,7 @@
     // test if a specific row on this board contains a conflict
     hasRowConflictAt: function(rowIndex) {
       var sum = 0;
+      debugger;
       for (var i = 0; i < rowIndex.length; i++) {
         sum += rowIndex[i]
       };
